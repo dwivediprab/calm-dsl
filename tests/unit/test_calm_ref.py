@@ -27,6 +27,7 @@ PROJECT_UUID = DSL_CONFIG["METADATA"]["PROJECT"].get(PROJECT_NAME, None)
 PROVIDER_NAME = "AzureVault_Cred_Provider"
 PROVIDER_UUID = DSL_CONFIG["METADATA"]["PROVIDER"].get(PROVIDER_NAME, None)
 
+
 @pytest.mark.pre_commit
 @pytest.mark.skipif(
     not AHV_ACCOUNT_UUID, reason="No {} account on the setup".format(AHV_ACCOUNT_NAME)
