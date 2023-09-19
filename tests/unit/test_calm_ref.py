@@ -3,7 +3,7 @@ import pytest
 import os
 
 from calm.dsl.builtins import CalmRefType
-from calm.dsl.builtins import read_file
+from calm.dsl.builtins import read_file, read_local_file
 from calm.dsl.log import get_logging_handle
 from tests.mock.constants import MockConstants
 
@@ -16,7 +16,7 @@ test_config_location = os.path.join(
     MockConstants.TEST_CONFIG_FILE_NAME,
 )
 
-DSL_CONFIG = json.loads(read_file(test_config_location, 0))
+DSL_CONFIG = json.loads(read_local_file(".tests/config.json"))
 ACCOUNTS = DSL_CONFIG["ACCOUNTS"]
 PROJECTS = DSL_CONFIG["PROJECTS"]
 PROVIDERS = DSL_CONFIG["PROVIDERS"]
