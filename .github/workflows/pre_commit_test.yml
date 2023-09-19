@@ -36,12 +36,14 @@ jobs:
         run: |
           source venv/bin/activate
           cd tests/mock && make mock-db-location && make mock-db
+          mkdir -p ~/.calm/mock/.local/.tests && cp config_test.json ~/.calm/mock/.local/.tests/config.json
       - name: Run Tests and Calculate Coverage
         run: |
           source venv/bin/activate
-          pytest tests/unit/test_calm_ref.py
-          coverage_percentage=$(coverage report -m | awk '/calm\/dsl\/builtins\/models\/calm_ref.py/ {print $6}')
-          echo "Coverage Percentage: $coverage_percentage%"
+          echo "python_files = tests/unit/test_calm_ref.py" >> pytest.ini
+          pytest -m pre_commit
+          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
+          echo "Coverage Percentage: $coverage_percentage"
           coverage=$(echo "$coverage_percentage" | sed 's/%//')
           if [ "$coverage" -lt 10 ]; then
             echo "Code coverage is below the threshold (10%). Blocking PR."
