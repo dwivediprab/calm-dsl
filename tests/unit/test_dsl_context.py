@@ -1,11 +1,13 @@
 import pytest
 from calm.dsl.config import get_context
 
+
 @pytest.mark.pre_commit
 def test_stratos_config():
     ContextObj = get_context()
     stratos_config = ContextObj.get_stratos_config()
     assert stratos_config.get("stratos_status", False) in [True, False]
+
 
 @pytest.mark.pre_commit
 def test_connection_config():
