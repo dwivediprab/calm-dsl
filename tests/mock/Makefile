@@ -8,6 +8,9 @@ load-db-data:
 mock-db-location:
 	# Create and point init.ini to mock db location.
 	../../venv/bin/python3 mock_dsl_config.py True
+	mkdir -p $(HOME)/.calm/mock/.local/.tests/keys
+	cp config_test.json $(HOME)/.calm/mock/.local/.tests/config.json
+	sh create_constants.sh
 
 mock-db:
 	# Load current data to db
