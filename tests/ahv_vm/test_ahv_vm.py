@@ -87,6 +87,7 @@ class MyAhvVM(AhvVm):
     categories = {"AppFamily": "Demo", "AppType": "Default"}
     cluster = Ref.Cluster(CLUSTER_MACRO)
 
+
 @pytest.mark.pre_commit
 def test_json():
 
@@ -95,6 +96,7 @@ def test_json():
     ContextObj.update_project_context(project_name=PROJECT_NAME)
     print(MyAhvVmResources.json_dumps(pprint=True))
     ContextObj.reset_configuration()
+
 
 @pytest.mark.pre_commit
 def test_macro_in_nic():
@@ -109,6 +111,7 @@ def test_macro_in_nic():
         vm_data["nic_list"][9]["subnet_reference"]["uuid"] == "@@{substrate_variable}@@"
     )
     ContextObj.reset_configuration()
+
 
 @pytest.mark.pre_commit
 def test_macro_in_cluster():
