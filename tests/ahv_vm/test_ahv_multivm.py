@@ -213,6 +213,7 @@ class BpMetadata(Metadata):
 
     project = Ref.Project(PROJECT_NAME)
 
+
 @pytest.mark.pre_commit
 def test_multivm_with_diff_bootconfig():
     """
