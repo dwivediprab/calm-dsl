@@ -1,4 +1,5 @@
 import json
+import pytest
 
 from calm.dsl.builtins import AhvVmDisk, AhvVmNic, AhvVmGC, AhvVmGpu, AhvVm
 from calm.dsl.builtins import basic_cred, ahv_vm_resources, Ref
@@ -15,8 +16,8 @@ SQL_SERVER_IMAGE = DSL_CONFIG["AHV"]["IMAGES"]["CD_ROM"]["SQL_SERVER_2014_x64"]
 NETWORK1 = DSL_CONFIG["AHV"]["NETWORK"]["VLAN1211"]
 
 # projects
-PROJECT = DSL_CONFIG["PROJECTS"]["PROJECT1"]
-PROJECT_NAME = PROJECT["NAME"]
+# PROJECT = DSL_CONFIG["PROJECTS"]["PROJECT1"]
+PROJECT_NAME = list(DSL_CONFIG["METADATA"]["PROJECT"].keys())[0]
 
 CENTOS_USERNAME = read_local_file(".tests/centos_username")
 CENTOS_PASSWORD = read_local_file(".tests/centos_password")
@@ -86,7 +87,7 @@ class MyAhvVM(AhvVm):
     categories = {"AppFamily": "Demo", "AppType": "Default"}
     cluster = Ref.Cluster(CLUSTER_MACRO)
 
-
+@pytest.mark.pre_commit
 def test_json():
 
     ContextObj = get_context()
@@ -95,7 +96,7 @@ def test_json():
     print(MyAhvVmResources.json_dumps(pprint=True))
     ContextObj.reset_configuration()
 
-
+@pytest.mark.pre_commit
 def test_macro_in_nic():
     """Tests macro in vm nics"""
 
@@ -109,7 +110,7 @@ def test_macro_in_nic():
     )
     ContextObj.reset_configuration()
 
-
+@pytest.mark.pre_commit
 def test_macro_in_cluster():
     """Tests macro in vm clusters"""
 

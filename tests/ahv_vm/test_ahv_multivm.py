@@ -1,4 +1,5 @@
 import json
+import pytest
 
 from calm.dsl.builtins import AhvVmDisk, AhvVmNic, AhvVmGC
 from calm.dsl.builtins import ref, basic_cred, AhvVmResources, AhvVm
@@ -22,8 +23,8 @@ SQL_SERVER_IMAGE = DSL_CONFIG["AHV"]["IMAGES"]["CD_ROM"]["SQL_SERVER_2014_x64"]
 NETWORK1 = DSL_CONFIG["AHV"]["NETWORK"]["VLAN1211"]  # TODO change network constants
 
 # projects
-PROJECT = DSL_CONFIG["PROJECTS"]["PROJECT1"]
-PROJECT_NAME = PROJECT["NAME"]
+# PROJECT = DSL_CONFIG["PROJECTS"]["PROJECT1"]
+PROJECT_NAME = list(DSL_CONFIG["METADATA"]["PROJECT"].keys())[0]
 
 CENTOS_KEY = read_local_file(".tests/keys/centos")
 CENTOS_PUBLIC_KEY = read_local_file(".tests/keys/centos_pub")
@@ -212,7 +213,7 @@ class BpMetadata(Metadata):
 
     project = Ref.Project(PROJECT_NAME)
 
-
+@pytest.mark.pre_commit
 def test_multivm_with_diff_bootconfig():
     """
     Tests in case of multi-vm blueprint, correct disk is set to bootable

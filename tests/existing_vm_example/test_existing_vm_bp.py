@@ -4,6 +4,7 @@ Exsiting machine example.
 """
 
 import json
+import os
 
 from calm.dsl.builtins import ref, basic_cred
 from calm.dsl.builtins import action, parallel
@@ -14,6 +15,21 @@ from calm.dsl.builtins import Deployment, Profile, Blueprint
 from calm.dsl.builtins import provider_spec, read_local_file
 from calm.dsl.store import Version
 from distutils.version import LooseVersion as LV
+from tests.mock.constants import MockConstants
+
+KNOWN_JSON_FILENAME = "test_existing_vm_bp.json"
+
+if os.environ.get("CALM_DSL_TESTS") == "MOCK":
+    directory_parts = os.path.abspath(__file__).split(os.path.sep)
+    directory_parts = os.path.join(
+        os.path.sep.join(directory_parts[:-3]), MockConstants.MOCK_JSON_LOCATION
+    )
+
+    FILE_PATH = os.path.join(directory_parts, KNOWN_JSON_FILENAME)
+
+else:
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    FILE_PATH = os.path.join(dir_path, KNOWN_JSON_FILENAME)
 
 DNS_SERVER = read_local_file(".tests/dns_server")
 
@@ -494,9 +510,6 @@ def test_json():
     # Setting the recursion limit to max for
     sys.setrecursionlimit(100000)
 
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(dir_path, "test_existing_vm_bp.json")
-
     # Change data to dummy
     TEST_PC_IP = DSL_CONFIG["EXISTING_MACHINE"]["DUMMY_DATA"]["IP_1"]
     CRED_USERNAME = DSL_CONFIG["EXISTING_MACHINE"]["DUMMY_DATA"]["CREDS"]["LINUX"][
@@ -514,7 +527,7 @@ def test_json():
     generated_json["app_profile_list"][0].pop("restore_config_list", None)
     generated_json["app_profile_list"][0].pop("patch_list", None)
 
-    known_json = json.load(open(file_path))
+    known_json = json.load(open(FILE_PATH))
     if LV(CALM_VERSION) >= LV("3.4.0"):
         for cred in known_json["credential_definition_list"]:
             cred["cred_class"] = "static"
