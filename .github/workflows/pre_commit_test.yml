@@ -40,7 +40,7 @@ jobs:
         run: |
           source venv/bin/activate
           echo "python_files = tests/unit/* tests/ahv_vm/*" >> pytest.ini
-          echo "filterwarnings = ignore:.*U.*mode is deprecated:DeprecationWarning" >> pytest.ini
+          echo "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
           cat pytest.ini
           pytest -m pre_commit
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
