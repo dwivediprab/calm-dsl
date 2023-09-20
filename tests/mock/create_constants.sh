@@ -1,3 +1,4 @@
+#Setting global constants
 echo "pswd" > "$HOME/.calm/mock/.local/.tests/centos_password"
 echo "usr" > "$HOME/.calm/mock/.local/.tests/centos_username"
 echo "usr" > "$HOME/.calm/mock/.local/.tests/default_cred_username"
@@ -18,5 +19,32 @@ echo "endpoint_windows_vpc" > "$HOME/.calm/mock/.local/.tests/endpoint_windows_v
 echo "usr" > "$HOME/.calm/mock/.local/.tests/username"
 echo "pswd" > "$HOME/.calm/mock/.local/.tests/password"
 echo "5.6.7.8" > "$HOME/.calm/mock/.local/.tests/test_pc_ip"
+
+#Setting centos keys
 echo "centos_key" > "$HOME/.calm/mock/.local/.tests/keys/centos"
 echo "centos_pub_key" > "$HOME/.calm/mock/.local/.tests/keys/centos_pub"
+
+
+#Setting runbook tests constants
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/ahv_linux_id"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/ahv_linux_id_with_powered_off"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/ahv_linux_vm_name_prefix"
+echo "usr" > "$HOME/.calm/mock/.local/.tests/runbook_tests/auth_username"
+echo "rbac_bp_test_project" > "$HOME/.calm/mock/.local/.tests/runbook_tests/rbac_project"
+echo "https://www.google.com/" > "$HOME/.calm/mock/.local/.tests/runbook_tests/url1"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vm_actions_ahv_off"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vm_actions_vmware_off"
+echo "13.13.13.13" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vm_ip"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vmware_linux_vm_name"
+echo "usr" > "$HOME/.calm/mock/.local/.tests/runbook_tests/windows_username"
+echo "pswd" > "$HOME/.calm/mock/.local/.tests/runbook_tests/ahv_linux_id_with_no_ip"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/ahv_linux_vm_name"
+echo "pswd" > "$HOME/.calm/mock/.local/.tests/runbook_tests/auth_password"
+echo "pswd" > "$HOME/.calm/mock/.local/.tests/runbook_tests/password"
+echo "https://www.google.com/" > "$HOME/.calm/mock/.local/.tests/runbook_tests/url"
+echo "usr" > "$HOME/.calm/mock/.local/.tests/runbook_tests/username"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vm_actions_ahv_on"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vm_actions_vmware_on"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vmware_linux_id"
+echo "test-uuid" > "$HOME/.calm/mock/.local/.tests/runbook_tests/vmware_linux_vm_name_prefix"
+echo "14.14.14.14" > "$HOME/.calm/mock/.local/.tests/runbook_tests/windows_vm_ip"
