@@ -43,8 +43,8 @@ jobs:
       - name: Run Tests and Calculate Coverage
         run: |
           source venv/bin/activate
-          echo "python_files = tests/unit/* tests/ahv_vm/*" >> pytest.ini
-          echo "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
+          echo -e "python_files = tests/unit/* tests/ahv_vm/*" >> pytest.ini
+          echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
           cat pytest.ini
           pytest -m pre_commit
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')

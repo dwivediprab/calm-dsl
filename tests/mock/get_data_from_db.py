@@ -489,7 +489,7 @@ def load_data():
         os.path.sep.join(directory_parts[:-1]), MockConstants.TEST_CONFIG_FILE_NAME
     )
 
-    test_config_data.update(MockConstants.config_dummy_data)
+    test_config_data.update(MockConstants.config_json_dummy_data)
 
     with open(cache_data_location, "w+") as outfile:
         outfile.write(json.dumps(filtered_cache_data, default=str, indent=4))

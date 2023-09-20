@@ -23,7 +23,6 @@ SQL_SERVER_IMAGE = DSL_CONFIG["AHV"]["IMAGES"]["CD_ROM"]["SQL_SERVER_2014_x64"]
 NETWORK1 = DSL_CONFIG["AHV"]["NETWORK"]["VLAN1211"]  # TODO change network constants
 
 # projects
-# PROJECT = DSL_CONFIG["PROJECTS"]["PROJECT1"]
 PROJECT_NAME = list(DSL_CONFIG["METADATA"]["PROJECT"].keys())[0]
 
 CENTOS_KEY = read_local_file(".tests/keys/centos")
