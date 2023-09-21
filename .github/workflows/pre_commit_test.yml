@@ -13,6 +13,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ['3.9']
+    env:
+      coverage_percentage: ""
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -46,7 +48,7 @@ jobs:
           echo -e "\npython_files = tests/unit/*" >> pytest.ini
           echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
           pytest -m pre_commit > logs.txt
-          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
+          $coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "Coverage Percentage: $coverage_percentage"
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
