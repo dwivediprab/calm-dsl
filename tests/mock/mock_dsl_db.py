@@ -58,7 +58,6 @@ class BaseMockCache:
         entity_data = cache_data.get(entity_type, {})
         if not entity_data:
             LOG.warning("No data exists for {}".format(entity_type))
-
         return entity_data
 
     def create_test_data(self):
