@@ -8,7 +8,7 @@ class MockConstants:
     MOCK_JSON_LOCATION = "tests/mock/jsons"
     CACHE_ZIP_FILE_NAME = "cache_data.gz"
     TEST_CONFIG_ZIP_FILE_NAME = "config_test.gz"
-    
+
     dsl_context = {
         "host": "1.1.1.1",
         "port": "1",

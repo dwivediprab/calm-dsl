@@ -22,16 +22,20 @@ cache_data_dict = {}
 filtered_cache_data = {}
 test_config_data = {}
 
+
 def decompress_json(input_file, output_file):
     if not os.path.exists(input_file):
         LOG.warning("{} not found.".format(input_file))
         sys.exit(-1)
-    
-    with gzip.open(input_file, 'r') as fin:
+
+    with gzip.open(input_file, "r") as fin:
         data = json.loads(fin.read().decode("utf-8"))
-    
+
     with open(output_file, "w+") as outfile:
         outfile.write(json.dumps(data, default=str, indent=4))
+
+    os.remove(input_file)
+
 
 def filter_project_data(entity_data, **kwargs):
     """
@@ -481,7 +485,7 @@ def load_data(decompress=False):
 
     Writes final filtered data from db to cache_data.gz and config_test.gz.
     Args
-        - decompress (bool): 
+        - decompress (bool):
             if True decompresses cache data and stores data into cache_data.json and config_test.json
             if False compresses cache data to cache_data.gz and config_test.gz
 
@@ -498,7 +502,7 @@ def load_data(decompress=False):
     )
     cache_zip_data_location = os.path.join(
         os.path.sep.join(directory_parts[:-1]), MockConstants.CACHE_ZIP_FILE_NAME
-        )
+    )
     test_config_zip_location = os.path.join(
         os.path.sep.join(directory_parts[:-1]), MockConstants.TEST_CONFIG_ZIP_FILE_NAME
     )
@@ -508,7 +512,6 @@ def load_data(decompress=False):
         decompress_json(test_config_zip_location, test_config_location)
         LOG.info("Decompressed successfully")
         return
-        
 
     entity_types = list(CacheTableBase.tables.keys())
     for entity_type in entity_types:
@@ -517,12 +520,14 @@ def load_data(decompress=False):
     filter_data()
 
     test_config_data.update(MockConstants.config_json_dummy_data)
-    
-    with gzip.open(cache_zip_data_location, 'w+') as fout:
-        fout.write(json.dumps(filtered_cache_data, default=str, indent=4).encode('utf-8'))  
 
-    with gzip.open(test_config_zip_location, 'w+') as fout:
-        fout.write(json.dumps(test_config_data, default=str, indent=4).encode('utf-8'))  
+    with gzip.open(cache_zip_data_location, "w+") as fout:
+        fout.write(
+            json.dumps(filtered_cache_data, default=str, indent=4).encode("utf-8")
+        )
+
+    with gzip.open(test_config_zip_location, "w+") as fout:
+        fout.write(json.dumps(test_config_data, default=str, indent=4).encode("utf-8"))
 
 
 if __name__ == "__main__":
