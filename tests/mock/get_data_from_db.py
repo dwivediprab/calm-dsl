@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import gzip
 
 from calm.dsl.store import Cache
 from calm.dsl.constants import CACHE
@@ -21,6 +22,16 @@ cache_data_dict = {}
 filtered_cache_data = {}
 test_config_data = {}
 
+def decompress_json(input_file, output_file):
+    if not os.path.exists(input_file):
+        LOG.warning("{} not found.".format(input_file))
+        sys.exit(-1)
+    
+    with gzip.open(input_file, 'r') as fin:
+        data = json.loads(fin.read().decode("utf-8"))
+    
+    with open(output_file, "w+") as outfile:
+        outfile.write(json.dumps(data, default=str, indent=4))
 
 def filter_project_data(entity_data, **kwargs):
     """
@@ -465,22 +476,19 @@ def get_data(entity_type):
         key += 1
 
 
-def load_data():
+def load_data(decompress=False):
     """
 
-    Writes final filtered data from db to cache_data.json and config_test.json.
+    Writes final filtered data from db to cache_data.gz and config_test.gz.
+    Args
+        - decompress (bool): 
+            if True decompresses cache data and stores data into cache_data.json and config_test.json
+            if False compresses cache data to cache_data.gz and config_test.gz
 
-    - cache_data.json contains filtered data
-    - config_test.json contains filtered data attached to each entity they belong to.
-      Data in test cases will be asserted against data in this file.
+    - cache_data.gz contains filtered data
+    - config_test.gz contains filtered data attached to each entity they belong to.
 
     """
-    entity_types = list(CacheTableBase.tables.keys())
-    for entity_type in entity_types:
-        get_data(entity_type)
-
-    filter_data()
-
     directory_parts = os.path.abspath(__file__).split(os.path.sep)
     cache_data_location = os.path.join(
         os.path.sep.join(directory_parts[:-1]), MockConstants.CACHE_FILE_NAME
@@ -488,22 +496,40 @@ def load_data():
     test_config_location = os.path.join(
         os.path.sep.join(directory_parts[:-1]), MockConstants.TEST_CONFIG_FILE_NAME
     )
+    cache_zip_data_location = os.path.join(
+        os.path.sep.join(directory_parts[:-1]), MockConstants.CACHE_ZIP_FILE_NAME
+        )
+    test_config_zip_location = os.path.join(
+        os.path.sep.join(directory_parts[:-1]), MockConstants.TEST_CONFIG_ZIP_FILE_NAME
+    )
+
+    if decompress:
+        decompress_json(cache_zip_data_location, cache_data_location)
+        decompress_json(test_config_zip_location, test_config_location)
+        LOG.info("Decompressed successfully")
+        return
+        
+
+    entity_types = list(CacheTableBase.tables.keys())
+    for entity_type in entity_types:
+        get_data(entity_type)
+
+    filter_data()
 
     test_config_data.update(MockConstants.config_json_dummy_data)
+    
+    with gzip.open(cache_zip_data_location, 'w+') as fout:
+        fout.write(json.dumps(filtered_cache_data, default=str, indent=4).encode('utf-8'))  
 
-    with open(cache_data_location, "w+") as outfile:
-        outfile.write(json.dumps(filtered_cache_data, default=str, indent=4))
-
-    with open(test_config_location, "w+") as outfile:
-        outfile.write(json.dumps(test_config_data, default=str, indent=4))
+    with gzip.open(test_config_zip_location, 'w+') as fout:
+        fout.write(json.dumps(test_config_data, default=str, indent=4).encode('utf-8'))  
 
 
 if __name__ == "__main__":
-    is_data_loaded = False
+    to_decompress = False
 
     if len(sys.argv) > 1:
-        is_data_loaded = sys.argv[1]
-        is_data_loaded = True if is_data_loaded == "True" else False
+        to_decompress = sys.argv[1]
+        to_decompress = True if to_decompress == "True" else False
 
-    if not is_data_loaded:
-        load_data()
+    load_data(to_decompress)
