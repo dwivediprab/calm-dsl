@@ -48,6 +48,15 @@ jobs:
           pytest -m pre_commit > logs.txt
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "Coverage Percentage: $coverage_percentage"
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs
+          path: logs.txt
+          retention-days: 5
+      - name: Check threshold coverage
+        run: |
+          echo "Coverage Percentage: $coverage_percentage"
           coverage=$(echo "$coverage_percentage" | sed 's/%//')
           if [ "$coverage" -lt 10 ]; then
             echo "Code coverage is below the threshold (10%). Blocking PR."
@@ -55,9 +64,3 @@ jobs:
           fi
         env:
           CI: true
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-logs
-          path: logs.txt
-          retention-days: 5
