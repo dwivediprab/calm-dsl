@@ -6,11 +6,9 @@ class MockConstants:
     CACHE_FILE_NAME = "cache_data.json"
     TEST_CONFIG_FILE_NAME = "config_test.json"
     MOCK_JSON_LOCATION = "tests/mock/jsons"
-    DNS_SERVER = "1.2.3.4"
-    NAMESERVER = "5.6.7.8"
-    CRED_USERNAME = "usr"
-    CRED_PASSWORD = "pswd"
-
+    CACHE_ZIP_FILE_NAME = "cache_data.gz"
+    TEST_CONFIG_ZIP_FILE_NAME = "config_test.gz"
+    
     dsl_context = {
         "host": "1.1.1.1",
         "port": "1",
