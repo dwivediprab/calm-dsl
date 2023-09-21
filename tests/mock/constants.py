@@ -28,7 +28,6 @@ class MockConstants:
 
     windows_cred = {"NAME": "windows_name", "USERNAME": "usr_name", "PASSWORD": "pswd"}
 
-
     config_json_dummy_data = {
         "AHV": {
             "IMAGES": {
