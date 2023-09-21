@@ -1,9 +1,15 @@
 
-load-db-data:
+compress-db-data:
 	# Load data from db to create some files
-	# get_data_from_file.py True -> to load data from db
-	# get_data_from_file.py False -> to not load data from db
+	# get_data_from_file.py True -> to decompress data of db
+	# get_data_from_file.py False -> to compress data from db and store 
 	../../venv/bin/python3 get_data_from_db.py False
+
+decompress-db-data:
+	# Load data from db to create some files
+	# get_data_from_file.py True -> to decompress data of db
+	# get_data_from_file.py False -> to compress data from db and store 
+	../../venv/bin/python3 get_data_from_db.py True
 
 mock-db-location:
 	# Create and point init.ini to mock db location.

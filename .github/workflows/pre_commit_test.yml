@@ -1,6 +1,11 @@
 name: run pre commit tests
 on:
-  workflow_dispatch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -34,12 +39,12 @@ jobs:
       - name: Build test environment
         run: |
           source venv/bin/activate
-          cd tests/mock && make mock-db-location && make mock-db
+          cd tests/mock && make decompress-db-data && make mock-db-location && make mock-db
       - name: Run Tests and Calculate Coverage
         run: |
           source venv/bin/activate
-          echo "python_files = tests/unit/* tests/ahv_vm/*" >> pytest.ini
-          echo "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
+          echo -e "\npython_files = tests/unit/* tests/ahv_vm/*" >> pytest.ini
+          echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
           cat pytest.ini
           pytest -m pre_commit
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
