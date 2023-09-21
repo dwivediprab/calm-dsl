@@ -45,7 +45,7 @@ jobs:
           source venv/bin/activate
           echo -e "\npython_files = tests/unit/*" >> pytest.ini
           echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
-          pytest -m pre_commit
+          pytest -m pre_commit > logs.txt
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "Coverage Percentage: $coverage_percentage"
           coverage=$(echo "$coverage_percentage" | sed 's/%//')
@@ -55,3 +55,9 @@ jobs:
           fi
         env:
           CI: true
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-logs
+          path: logs.txt
+          retention-days: 5
