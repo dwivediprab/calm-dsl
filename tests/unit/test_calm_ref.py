@@ -42,7 +42,7 @@ def test_decompile_subnet():
         cls = CalmRefType.decompile(cdict)
         assert cls.name == subnets[0]["NAME"]
         assert cls.cluster == subnets[0]["CLUSTER_NAME"]
-        assert cls.account_uuid == "ss"
+        assert cls.account_uuid == AHV_ACCOUNT_UUID
 
 
 @pytest.mark.pre_commit
