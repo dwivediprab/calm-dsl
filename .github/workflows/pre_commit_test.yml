@@ -50,8 +50,9 @@ jobs:
           pytest -m pre_commit > logs.txt
           exit_code=$?
           echo "PYTEST_EXIT_CODE=$exit_code" >> $GITHUB_ENV
+          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
+          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
           set -e
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -61,10 +62,8 @@ jobs:
       - name: Check threshold coverage
         run: |
           if [ $PYTEST_EXIT_CODE -ne 0 ]; then
-            echo "Pytest failed with exit code $PYTEST_EXIT_CODE."
-          fi
-          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
-          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
+            echo "Pytest failed check test-logs for details."
+            exit 1
           fi
           echo "Coverage Percentage: $COVERAGE_PERCENTAGE"
           coverage=$(echo "$COVERAGE_PERCENTAGE" | sed 's/%//')
