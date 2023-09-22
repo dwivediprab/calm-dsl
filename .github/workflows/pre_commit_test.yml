@@ -13,8 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: ['3.9']
-    env:
-      coverage_percentage: ""
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -50,6 +48,7 @@ jobs:
           pytest -m pre_commit > logs.txt
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "Coverage Percentage: $coverage_percentage"
+          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> GITHUB_ENV
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -58,8 +57,8 @@ jobs:
           retention-days: 5
       - name: Check threshold coverage
         run: |
-          echo "Coverage Percentage: $coverage_percentage"
-          coverage=$(echo "$coverage_percentage" | sed 's/%//')
+          echo "Coverage Percentage: $COVERAGE_PERCENTAGE"
+          coverage=$(echo "$COVERAGE_PERCENTAGE" | sed 's/%//')
           if [ "$coverage" -lt 10 ]; then
             echo "Code coverage is below the threshold (10%). Blocking PR."
             exit 1
