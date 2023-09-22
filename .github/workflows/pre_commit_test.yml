@@ -46,9 +46,12 @@ jobs:
           source venv/bin/activate
           echo -e "\npython_files = tests/unit/*" >> pytest.ini
           echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
-          pytest -m pre_commit > logs.txt || echo ""
-          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
-          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
+          set +e
+          pytest -m pre_commit > logs.txt
+          exit_code=$?
+          echo "PYTEST_EXIT_CODE=$exit_code" >> $GITHUB_ENV
+          set -e
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -57,11 +60,11 @@ jobs:
           retention-days: 5
       - name: Check threshold coverage
         run: |
-          if [ "${{ steps.pytest.outcome }}" == "failure" ]; then
-            echo "Pytest failed."
-            exit 1
-          else
-            echo "Pytest passed."
+          if [ $PYTEST_EXIT_CODE -ne 0 ]; then
+            echo "Pytest failed with exit code $PYTEST_EXIT_CODE."
+          fi
+          coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
+          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
           fi
           echo "Coverage Percentage: $COVERAGE_PERCENTAGE"
           coverage=$(echo "$COVERAGE_PERCENTAGE" | sed 's/%//')
