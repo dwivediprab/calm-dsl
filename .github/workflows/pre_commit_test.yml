@@ -48,7 +48,7 @@ jobs:
           pytest -m pre_commit > logs.txt
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "Coverage Percentage: $coverage_percentage"
-          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> GITHUB_ENV
+          echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
