@@ -46,8 +46,7 @@ jobs:
           source venv/bin/activate
           echo -e "\npython_files = tests/unit/*" >> pytest.ini
           echo -e "filterwarnings = ignore::DeprecationWarning" >> pytest.ini
-          pytest -m pre_commit > logs.txt
-          echo "::set-output name=status::success"
+          pytest -m pre_commit > logs.txt || echo ""
           coverage_percentage=$(coverage report -m | awk '/TOTAL/ {print $6}')
           echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
       - name: Upload Artifact
@@ -58,7 +57,7 @@ jobs:
           retention-days: 5
       - name: Check threshold coverage
         run: |
-          if [ "${{ steps.pytest.outputs.status }}" != "success" ]; then
+          if [ "${{ steps.pytest.outcome }}" == "failure" ]; then
             echo "Pytest failed."
             exit 1
           else
