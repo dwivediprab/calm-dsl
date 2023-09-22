@@ -15,6 +15,9 @@ jobs:
         python-version: ['3.9']
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -65,7 +68,6 @@ jobs:
             echo "Pytest failed check test-logs for details."
             exit 1
           fi
-          echo "Coverage Percentage: $COVERAGE_PERCENTAGE"
           coverage=$(echo "$COVERAGE_PERCENTAGE" | sed 's/%//')
           if [ "$coverage" -lt 10 ]; then
             echo "Code coverage is below the threshold (10%). Blocking PR."
