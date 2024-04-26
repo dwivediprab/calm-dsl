@@ -1,6 +1,11 @@
 name: Setup & build calm-dsl
 on:
-  workflow_dispatch
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build:
@@ -28,14 +33,3 @@ jobs:
     - name: Install requirements
       run: |
         make dev
-    - name: Build python package
-      run: |
-        make dist
-    - name: Build docker image
-      run: |
-        make docker
-    - name: Execute container
-      uses: addnab/docker-run-action@v3
-      with:
-        image: ntnx/calm-dsl
-        run: calm
