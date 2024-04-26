@@ -19,7 +19,7 @@ jobs:
       id: setup-python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Print python version
       run: echo ${{ steps.setup-python.outputs.python-version }}
     - name: black
