@@ -21,7 +21,7 @@ jobs:
       with:
         python-version: 3.7
     - name: Print python version
-      run: echo steps.setup-python.outputs.python-version
+      run: echo "steps.setup-python.outputs.python-version"
     - name: black
       if: steps.setup-python.outputs.python-version < 3.8
       uses: psf/black@stable # Exclude list is not honored - https://github.com/psf/black/issues/1584
